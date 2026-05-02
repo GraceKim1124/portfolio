@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grace Kim · Ad Operations Data Pipeline</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  background: #FAFAF7;
+  color: #2C2C2A;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+.section {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 0.5px solid #E8E6DD;
+  overflow: hidden;
+}
+.section:last-of-type {
+  border-bottom: none;
+}
+.section.hero {
+  border-bottom: 0.5px solid #E8E6DD;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+}
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.theme-toggle {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: #FFFFFF;
+  border: 0.5px solid #D3D1C7;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #2C2C2A;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  z-index: 100;
+  font-family: inherit;
+}
+.theme-toggle:hover {
+  background: #F1EFE8;
+}
+.footer {
+  padding-top: 32px;
+  margin-top: 40px;
+  text-align: center;
+  border-top: 0.5px solid #E8E6DD;
+}
+.footer p {
+  font-size: 12px;
+  color: #5F5E5A;
+  margin-bottom: 16px;
+}
+.footer a {
+  color: #2C2C2A;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 13px;
+  border-bottom: 1px solid #2C2C2A;
+  padding-bottom: 2px;
+}
+.footer a:hover {
+  opacity: 0.6;
+}
+@keyframes scroll-fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section {
+  animation: scroll-fade 0.8s ease-out;
+}
+</style>
+</head>
+<body>
+
+<a href="dark.html" class="theme-toggle">◐ Switch to dark</a>
+
+<div class="container">
+
+<!-- HERO -->
+<section class="section hero">
+<svg width="100%" viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="metric-purple" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#EEEDFE"/>
+<stop offset="100%" stop-color="#CECBF6"/>
+</linearGradient>
+<linearGradient id="metric-amber" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#FAEEDA"/>
+<stop offset="100%" stop-color="#FAC775"/>
+</linearGradient>
+<linearGradient id="metric-teal" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#E1F5EE"/>
+<stop offset="100%" stop-color="#9FE1CB"/>
+</linearGradient>
+<linearGradient id="metric-blue" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#E6F1FB"/>
+<stop offset="100%" stop-color="#B5D4F4"/>
+</linearGradient>
+<radialGradient id="hero-glow-1" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#7F77DD" stop-opacity="0.15"/>
+<stop offset="100%" stop-color="#7F77DD" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="hero-glow-2" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#1D9E75" stop-opacity="0.12"/>
+<stop offset="100%" stop-color="#1D9E75" stop-opacity="0"/>
+</radialGradient>
+<style>
+.fade-name { animation: fadein 0.8s ease-out backwards; animation-delay: 0.2s; }
+.fade-role { animation: fadein 0.8s ease-out backwards; animation-delay: 0.4s; }
+.fade-cta-h { animation: fadein 0.8s ease-out backwards; animation-delay: 0.5s; }
+.fade-divider { animation: drawline 0.8s ease-out backwards; animation-delay: 0.6s; transform-origin: left; transform-box: fill-box; }
+.fade-title { animation: fadein 0.8s ease-out backwards; animation-delay: 0.8s; }
+.fade-subtitle { animation: fadein 0.8s ease-out backwards; animation-delay: 1.0s; }
+.metric-1 { animation: metricin 0.7s ease-out backwards; animation-delay: 1.2s; }
+.metric-2 { animation: metricin 0.7s ease-out backwards; animation-delay: 1.35s; }
+.metric-3 { animation: metricin 0.7s ease-out backwards; animation-delay: 1.5s; }
+.metric-4 { animation: metricin 0.7s ease-out backwards; animation-delay: 1.65s; }
+.fade-scroll { animation: fadein 0.8s ease-out backwards; animation-delay: 1.9s; }
+@keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes drawline { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes metricin { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.glow-float-1 { animation: glowfloat 6s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.glow-float-2 { animation: glowfloat 6s ease-in-out infinite 3s; transform-origin: center; transform-box: fill-box; }
+@keyframes glowfloat { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(10px, -10px) scale(1.1); } }
+.metric-glow-h1 { animation: metricglow 4s ease-in-out infinite; }
+.metric-glow-h2 { animation: metricglow 4s ease-in-out infinite 1s; }
+.metric-glow-h3 { animation: metricglow 4s ease-in-out infinite 2s; }
+.metric-glow-h4 { animation: metricglow 4s ease-in-out infinite 3s; }
+@keyframes metricglow { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+.cta-arrow-h { animation: arrowmove 1.5s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes arrowmove { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(2px); } }
+.scroll-indicator { animation: scrollbounce 2s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes scrollbounce { 0%, 100% { transform: translateY(0); opacity: 0.6; } 50% { transform: translateY(4px); opacity: 1; } }
+</style>
+</defs>
+<circle cx="120" cy="120" r="180" fill="url(#hero-glow-1)" class="glow-float-1"/>
+<circle cx="560" cy="380" r="200" fill="url(#hero-glow-2)" class="glow-float-2"/>
+
+<g class="fade-name">
+<text x="40" y="80" font-size="38" font-weight="500" fill="#2C2C2A">Grace Kim</text>
+</g>
+
+<g class="fade-role">
+<text x="40" y="108" fill="#5F5E5A" font-size="14">Data Engineering Consultant</text>
+</g>
+
+<a href="https://www.linkedin.com/in/graceky2/" target="_blank" class="fade-cta-h">
+<rect x="380" y="56" width="200" height="40" rx="20" fill="#2C2C2A" style="cursor: pointer;"/>
+<text x="410" y="80" fill="#FFFFFF" font-size="13" font-weight="500" dominant-baseline="central" style="cursor: pointer;">Connect on LinkedIn</text>
+<g transform="translate(556, 76)" class="cta-arrow-h">
+<path d="M -4 0 L 4 0 M 1 -3 L 4 0 L 1 3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</a>
+
+<line x1="40" y1="132" x2="120" y2="132" stroke="#7F77DD" stroke-width="1.5" class="fade-divider"/>
+
+<g class="fade-title">
+<text x="40" y="178" font-size="25" font-weight="500" fill="#2C2C2A">Ad Operations Data Pipeline &amp; Dashboards</text>
+</g>
+
+<g class="fade-subtitle">
+<text x="40" y="210" fill="#444441" font-size="15">End-to-end data infrastructure on Microsoft Fabric ·</text>
+<text x="40" y="232" fill="#444441" font-size="15">powering executive dashboards for 60+ ad networks unified.</text>
+</g>
+
+<!-- Metric cards - unified line-style icons, better spacing -->
+<g class="metric-1">
+<rect x="20" y="270" width="155" height="100" rx="14" fill="#FFFFFF" stroke="#CECBF6" stroke-width="0.5"/>
+<rect x="20" y="270" width="155" height="3" rx="1.5" fill="#7F77DD"/>
+<g transform="translate(40, 300)" class="metric-glow-h1">
+<circle cx="0" cy="0" r="11" fill="none" stroke="#534AB7" stroke-width="1.2"/>
+<circle cx="0" cy="0" r="2" fill="#534AB7"/>
+<circle cx="-7" cy="-4" r="1.5" fill="#534AB7" opacity="0.8"/>
+<circle cx="7" cy="-4" r="1.5" fill="#534AB7" opacity="0.8"/>
+<circle cx="-7" cy="4" r="1.5" fill="#534AB7" opacity="0.8"/>
+<circle cx="7" cy="4" r="1.5" fill="#534AB7" opacity="0.8"/>
+</g>
+<text x="62" y="297" fill="#3C3489" font-size="10" letter-spacing="0.8" font-weight="500">SCALE</text>
+<text x="62" y="320" font-size="24" font-weight="500" fill="#2C2C2A">60+</text>
+<text x="40" y="350" fill="#444441" font-size="12">ad networks</text>
+<text x="40" y="364" fill="#5F5E5A" font-size="11">integrated</text>
+</g>
+
+<g class="metric-2">
+<rect x="183" y="270" width="155" height="100" rx="14" fill="#FFFFFF" stroke="#FAC775" stroke-width="0.5"/>
+<rect x="183" y="270" width="155" height="3" rx="1.5" fill="#BA7517"/>
+<g transform="translate(203, 300)" class="metric-glow-h2">
+<rect x="-9" y="-9" width="18" height="6" rx="1.5" fill="none" stroke="#BA7517" stroke-width="1.2"/>
+<rect x="-9" y="-3" width="18" height="6" rx="1.5" fill="none" stroke="#BA7517" stroke-width="1.2"/>
+<rect x="-9" y="3" width="18" height="6" rx="1.5" fill="none" stroke="#BA7517" stroke-width="1.2"/>
+</g>
+<text x="225" y="297" fill="#854F0B" font-size="10" letter-spacing="0.8" font-weight="500">STRUCTURE</text>
+<text x="225" y="320" font-size="24" font-weight="500" fill="#2C2C2A">3 layers</text>
+<text x="203" y="350" fill="#444441" font-size="12">medallion</text>
+<text x="203" y="364" fill="#5F5E5A" font-size="11">architecture</text>
+</g>
+
+<g class="metric-3">
+<rect x="346" y="270" width="155" height="100" rx="14" fill="#FFFFFF" stroke="#9FE1CB" stroke-width="0.5"/>
+<rect x="346" y="270" width="155" height="3" rx="1.5" fill="#1D9E75"/>
+<g transform="translate(366, 300)" class="metric-glow-h3">
+<path d="M -8 4 L -2 -2 L 2 2 L 8 -6" fill="none" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 4 -6 L 8 -6 L 8 -2" fill="none" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="388" y="297" fill="#0F6E56" font-size="10" letter-spacing="0.8" font-weight="500">IMPACT</text>
+<text x="388" y="320" font-size="24" font-weight="500" fill="#1D9E75">90%</text>
+<text x="366" y="350" fill="#444441" font-size="12">faster time</text>
+<text x="366" y="364" fill="#5F5E5A" font-size="11">to insight</text>
+</g>
+
+<g class="metric-4">
+<rect x="509" y="270" width="151" height="100" rx="14" fill="#FFFFFF" stroke="#B5D4F4" stroke-width="0.5"/>
+<rect x="509" y="270" width="151" height="3" rx="1.5" fill="#185FA5"/>
+<g transform="translate(529, 300)" class="metric-glow-h4">
+<circle cx="0" cy="0" r="9" fill="none" stroke="#185FA5" stroke-width="1.2"/>
+<polyline points="-1,-5 -1,0 3,2" fill="none" stroke="#185FA5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="551" y="297" fill="#0C447C" font-size="10" letter-spacing="0.8" font-weight="500">DELIVERY</text>
+<text x="551" y="320" font-size="24" font-weight="500" fill="#2C2C2A">Daily</text>
+<text x="529" y="350" fill="#444441" font-size="12">automated</text>
+<text x="529" y="364" fill="#5F5E5A" font-size="11">pipeline live</text>
+</g>
+
+</svg>
+</section>
+
+
+<!-- NARRATIVE -->
+<section class="section">
+<svg width="100%" viewBox="0 0 680 600" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow-narr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<linearGradient id="problem-grad-n" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FCEBEB"/><stop offset="100%" stop-color="#F7C1C1"/></linearGradient>
+<linearGradient id="solution-grad-n" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EEEDFE"/><stop offset="100%" stop-color="#CECBF6"/></linearGradient>
+<linearGradient id="outcome-grad-n" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E1F5EE"/><stop offset="100%" stop-color="#9FE1CB"/></linearGradient>
+<radialGradient id="outcome-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1D9E75" stop-opacity="0.35"/><stop offset="100%" stop-color="#1D9E75" stop-opacity="0"/></radialGradient>
+<radialGradient id="problem-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E24B4A" stop-opacity="0.15"/><stop offset="100%" stop-color="#E24B4A" stop-opacity="0"/></radialGradient>
+<radialGradient id="solution-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#7F77DD" stop-opacity="0.18"/><stop offset="100%" stop-color="#7F77DD" stop-opacity="0"/></radialGradient>
+<style>
+.fade-stage-1 { animation: fadein 0.6s ease-out backwards; animation-delay: 0.1s; }
+.fade-stage-2 { animation: fadein 0.6s ease-out backwards; animation-delay: 0.7s; }
+.fade-stage-3 { animation: fadein 0.6s ease-out backwards; animation-delay: 1.4s; }
+@keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.bullet-1-p { animation: bulletin 0.4s ease-out backwards; animation-delay: 0.3s; }
+.bullet-2-p { animation: bulletin 0.4s ease-out backwards; animation-delay: 0.4s; }
+.bullet-3-p { animation: bulletin 0.4s ease-out backwards; animation-delay: 0.5s; }
+.bullet-1-s { animation: bulletin 0.4s ease-out backwards; animation-delay: 0.9s; }
+.bullet-2-s { animation: bulletin 0.4s ease-out backwards; animation-delay: 1.0s; }
+.bullet-3-s { animation: bulletin 0.4s ease-out backwards; animation-delay: 1.1s; }
+.bullet-1-o { animation: bulletin 0.4s ease-out backwards; animation-delay: 1.6s; }
+.bullet-2-o { animation: bulletin 0.4s ease-out backwards; animation-delay: 1.7s; }
+@keyframes bulletin { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
+.outcome-glow-pulse { animation: glowpulse 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.problem-glow-pulse { animation: glowpulse 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.solution-glow-pulse { animation: glowpulse 3s ease-in-out infinite 1.5s; transform-origin: center; transform-box: fill-box; }
+@keyframes glowpulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+.bar-fill-n { animation: fillbar 1.4s ease-out backwards; animation-delay: 1.9s; transform-origin: left; transform-box: fill-box; }
+@keyframes fillbar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.connector-1-n { stroke-dasharray: 24; stroke-dashoffset: 24; animation: drawline 0.5s ease-out forwards; animation-delay: 0.65s; }
+.connector-2-n { stroke-dasharray: 24; stroke-dashoffset: 24; animation: drawline 0.5s ease-out forwards; animation-delay: 1.35s; }
+@keyframes drawline { to { stroke-dashoffset: 0; } }
+.dot-pulse-1-n { animation: dotpulse 2s ease-in-out infinite; }
+.dot-pulse-2-n { animation: dotpulse 2s ease-in-out infinite 0.3s; }
+.dot-pulse-3-n { animation: dotpulse 2s ease-in-out infinite 0.6s; }
+@keyframes dotpulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+.number-pop-n { animation: numpop 0.8s ease-out backwards; animation-delay: 1.7s; display: inline-block; }
+@keyframes numpop { 0% { opacity: 0; } 60% { opacity: 1; } 100% { opacity: 1; } }
+</style>
+</defs>
+<text x="40" y="40" font-size="22" font-weight="600" fill="#2C2C2A">30-Second Narrative</text>
+<text x="40" y="62" fill="#5F5E5A" font-size="13">Problem · Solution · Outcome</text>
+<g class="fade-stage-1">
+<circle cx="50" cy="155" r="60" fill="url(#problem-glow)" class="problem-glow-pulse"/>
+<rect x="20" y="90" width="640" height="140" rx="14" fill="#FFFFFF" stroke="#F7C1C1" stroke-width="0.5"/>
+<rect x="20" y="90" width="3" height="140" rx="1.5" fill="#E24B4A"/>
+<g transform="translate(50, 120)">
+<circle cx="0" cy="0" r="16" fill="url(#problem-grad-n)" stroke="#A32D2D" stroke-width="0.5"/>
+<text x="0" y="0" text-anchor="middle" dominant-baseline="central" fill="#791F1F" font-size="15" font-weight="500">!</text>
+</g>
+<text x="80" y="116" fill="#A32D2D" font-size="10" letter-spacing="1.2" font-weight="500">PROBLEM</text>
+<text x="80" y="138" font-size="15" font-weight="500" fill="#2C2C2A">Fragmented manual reporting at scale</text>
+<g class="bullet-1-p"><circle cx="92" cy="166" r="2.5" fill="#E24B4A" class="dot-pulse-1-n"/><text x="104" y="170" fill="#444441" font-size="12">Weekly manual download from 60+ ad networks</text></g>
+<g class="bullet-2-p"><circle cx="92" cy="190" r="2.5" fill="#E24B4A" class="dot-pulse-2-n"/><text x="104" y="194" fill="#444441" font-size="12">Data scattered across local machines, no version control</text></g>
+<g class="bullet-3-p"><circle cx="92" cy="214" r="2.5" fill="#E24B4A" class="dot-pulse-3-n"/><text x="104" y="218" fill="#444441" font-size="12">Dashboard pulling 60+ direct connections, frequent loading failures</text></g>
+</g>
+<line x1="40" y1="240" x2="40" y2="262" stroke="#7F77DD" stroke-width="2" class="connector-1-n" marker-end="url(#arrow-narr)"/>
+<g class="fade-stage-2">
+<circle cx="50" cy="335" r="60" fill="url(#solution-glow)" class="solution-glow-pulse"/>
+<rect x="20" y="270" width="640" height="140" rx="14" fill="#FFFFFF" stroke="#CECBF6" stroke-width="0.5"/>
+<rect x="20" y="270" width="3" height="140" rx="1.5" fill="#7F77DD"/>
+<g transform="translate(50, 300)">
+<circle cx="0" cy="0" r="16" fill="url(#solution-grad-n)" stroke="#534AB7" stroke-width="0.5"/>
+<path d="M -6 0 L -2 4 L 6 -5" fill="none" stroke="#3C3489" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="80" y="296" fill="#3C3489" font-size="10" letter-spacing="1.2" font-weight="500">SOLUTION</text>
+<text x="80" y="318" font-size="15" font-weight="500" fill="#2C2C2A">Microsoft Fabric · Medallion architecture</text>
+<g class="bullet-1-s"><circle cx="92" cy="346" r="2.5" fill="#7F77DD" class="dot-pulse-1-n"/><text x="104" y="350" fill="#444441" font-size="12">Microsoft Fabric chosen for native Power BI integration · minimal infrastructure overhead</text></g>
+<g class="bullet-2-s"><circle cx="92" cy="370" r="2.5" fill="#7F77DD" class="dot-pulse-2-n"/><text x="104" y="374" fill="#444441" font-size="12">Bronze · Silver · Gold layers establishing single source of truth</text></g>
+<g class="bullet-3-s"><circle cx="92" cy="394" r="2.5" fill="#7F77DD" class="dot-pulse-3-n"/><text x="104" y="398" fill="#444441" font-size="12">Modular notebook design adds new ad networks in hours, not days</text></g>
+</g>
+<line x1="40" y1="420" x2="40" y2="442" stroke="#1D9E75" stroke-width="2" class="connector-2-n" marker-end="url(#arrow-narr)"/>
+<g class="fade-stage-3">
+<circle cx="340" cy="510" r="200" fill="url(#outcome-glow)" class="outcome-glow-pulse"/>
+<rect x="20" y="450" width="640" height="140" rx="14" fill="#FFFFFF" stroke="#9FE1CB" stroke-width="1"/>
+<rect x="20" y="450" width="3" height="140" rx="1.5" fill="#1D9E75"/>
+<g transform="translate(50, 482)">
+<circle cx="0" cy="0" r="16" fill="url(#outcome-grad-n)" stroke="#0F6E56" stroke-width="0.8"/>
+<path d="M -5 -5 L 5 -5 L 5 5 L 0 5 L 0 0 L -5 0 Z" fill="none" stroke="#04342C" stroke-width="1.4" stroke-linejoin="round"/>
+<circle cx="0" cy="0" r="1.5" fill="#04342C"/>
+</g>
+<text x="80" y="478" fill="#0F6E56" font-size="10" letter-spacing="1.2" font-weight="500">OUTCOME</text>
+<text x="80" y="508" font-size="20" font-weight="500" fill="#04342C"><tspan fill="#1D9E75" font-size="24" font-weight="500" class="number-pop-n">90%</tspan> Reduction in Time-to-Insight</text>
+<g transform="translate(80, 524)">
+<rect x="0" y="0" width="240" height="6" rx="3" fill="#E8E6DD"/>
+<rect x="0" y="0" width="216" height="6" rx="3" fill="#1D9E75" class="bar-fill-n"/>
+</g>
+<text x="332" y="532" fill="#444441" font-size="13">10 hrs/week → <tspan font-weight="500" fill="#04342C">under 1 hr</tspan></text>
+<g class="bullet-1-o"><circle cx="92" cy="558" r="2.5" fill="#1D9E75" class="dot-pulse-1-n"/><text x="104" y="562" fill="#444441" font-size="12">Daily automated pipeline accelerates business decision-making</text></g>
+<g class="bullet-2-o"><circle cx="92" cy="582" r="2.5" fill="#1D9E75" class="dot-pulse-2-n"/><text x="104" y="586" fill="#444441" font-size="12">First unified ad revenue dashboard across parent and subsidiary</text></g>
+</g>
+</svg>
+</section>
+
+
+<!-- BEFORE VS AFTER TABLE -->
+<section class="section">
+<svg width="100%" viewBox="0 0 680 500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="header-bg-ba" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FAFAF7"/><stop offset="100%" stop-color="#F1EFE8"/></linearGradient>
+<linearGradient id="after-bg-ba" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E1F5EE"/><stop offset="100%" stop-color="#E1F5EE"/></linearGradient>
+<style>
+.row-1-ba { animation: rowin-ba 0.5s ease-out backwards; animation-delay: 0.2s; }
+.row-2-ba { animation: rowin-ba 0.5s ease-out backwards; animation-delay: 0.35s; }
+.row-3-ba { animation: rowin-ba 0.5s ease-out backwards; animation-delay: 0.5s; }
+.row-4-ba { animation: rowin-ba 0.5s ease-out backwards; animation-delay: 0.65s; }
+.row-5-ba { animation: rowin-ba 0.5s ease-out backwards; animation-delay: 0.8s; }
+@keyframes rowin-ba { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+.header-fade-ba { animation: fadein-ba 0.5s ease-out backwards; animation-delay: 0.1s; }
+@keyframes fadein-ba { from { opacity: 0; } to { opacity: 1; } }
+.icon-pulse-1-ba { animation: iconpulse-ba 2.5s ease-in-out infinite; }
+.icon-pulse-2-ba { animation: iconpulse-ba 2.5s ease-in-out infinite 0.4s; }
+.icon-pulse-3-ba { animation: iconpulse-ba 2.5s ease-in-out infinite 0.8s; }
+.icon-pulse-4-ba { animation: iconpulse-ba 2.5s ease-in-out infinite 1.2s; }
+.icon-pulse-5-ba { animation: iconpulse-ba 2.5s ease-in-out infinite 1.6s; }
+@keyframes iconpulse-ba { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+.arrow-flow-ba { stroke-dasharray: 4 4; animation: arrowflow-ba 2s linear infinite; }
+@keyframes arrowflow-ba { to { stroke-dashoffset: -16; } }
+.check-pop-1-ba { animation: checkpop-ba 0.5s ease-out backwards; animation-delay: 0.4s; transform-origin: center; transform-box: fill-box; }
+.check-pop-2-ba { animation: checkpop-ba 0.5s ease-out backwards; animation-delay: 0.55s; transform-origin: center; transform-box: fill-box; }
+.check-pop-3-ba { animation: checkpop-ba 0.5s ease-out backwards; animation-delay: 0.7s; transform-origin: center; transform-box: fill-box; }
+.check-pop-4-ba { animation: checkpop-ba 0.5s ease-out backwards; animation-delay: 0.85s; transform-origin: center; transform-box: fill-box; }
+.check-pop-5-ba { animation: checkpop-ba 0.5s ease-out backwards; animation-delay: 1.0s; transform-origin: center; transform-box: fill-box; }
+@keyframes checkpop-ba { 0% { opacity: 0; transform: scale(0); } 60% { transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+</style>
+</defs>
+<text x="40" y="40" font-size="22" font-weight="600" fill="#2C2C2A">Before vs After</text>
+<text x="40" y="62" fill="#BA7517" font-size="13">Operational stability and efficiency through Fabric-based infrastructure</text>
+<g class="header-fade-ba">
+<rect x="20" y="90" width="640" height="42" rx="10" fill="url(#header-bg-ba)" stroke="#D3D1C7" stroke-width="0.5"/>
+<line x1="180" y1="90" x2="180" y2="132" stroke="#D3D1C7" stroke-width="0.5"/>
+<line x1="420" y1="90" x2="420" y2="132" stroke="#D3D1C7" stroke-width="0.5"/>
+<text x="100" y="116" text-anchor="middle" fill="#2C2C2A" font-size="11" letter-spacing="1" font-weight="500">CATEGORY</text>
+<text x="300" y="116" text-anchor="middle" fill="#A32D2D" font-size="11" letter-spacing="1" font-weight="500">AS-IS</text>
+<text x="540" y="116" text-anchor="middle" fill="#0F6E56" font-size="11" letter-spacing="1" font-weight="500">TO-BE</text>
+</g>
+<g class="row-1-ba">
+<rect x="20" y="138" width="640" height="62" rx="8" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<line x1="180" y1="138" x2="180" y2="200" stroke="#E8E6DD" stroke-width="0.3"/>
+<line x1="420" y1="138" x2="420" y2="200" stroke="#E8E6DD" stroke-width="0.3"/>
+<rect x="20" y="138" width="3" height="62" rx="1.5" fill="#7F77DD"/>
+<g transform="translate(50, 169)" class="icon-pulse-1-ba"><rect x="-5" y="-5" width="3" height="3" rx="0.5" fill="#534AB7"/><rect x="-1" y="-5" width="3" height="3" rx="0.5" fill="#534AB7"/><rect x="3" y="-5" width="3" height="3" rx="0.5" fill="#534AB7"/><rect x="-5" y="-1" width="3" height="3" rx="0.5" fill="#534AB7"/><rect x="-1" y="-1" width="3" height="3" rx="0.5" fill="#534AB7"/><rect x="3" y="-1" width="3" height="3" rx="0.5" fill="#534AB7"/></g>
+<text x="68" y="173" fill="#2C2C2A" font-size="12" font-weight="500">Semantic Model</text>
+<rect x="194" y="156" width="212" height="28" rx="14" fill="#FCEBEB" stroke="#F7C1C1" stroke-width="0.4" opacity="0.6"/>
+<text x="300" y="173" text-anchor="middle" fill="#791F1F" font-size="11">60+ fragmented tables</text>
+<g class="check-pop-1-ba">
+<rect x="438" y="156" width="206" height="28" rx="14" fill="url(#after-bg-ba)" stroke="#9FE1CB" stroke-width="0.4"/>
+<g transform="translate(454, 170)">
+<circle cx="0" cy="0" r="6" fill="#1D9E75"/>
+<path d="M -2.5 0 L -1 2 L 3 -2" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="468" y="173" fill="#04342C" font-size="11" font-weight="500">4 unified Gold tables</text>
+</g>
+</g>
+
+<g class="row-2-ba">
+<rect x="20" y="206" width="640" height="62" rx="8" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<line x1="180" y1="206" x2="180" y2="268" stroke="#E8E6DD" stroke-width="0.3"/>
+<line x1="420" y1="206" x2="420" y2="268" stroke="#E8E6DD" stroke-width="0.3"/>
+<rect x="20" y="206" width="3" height="62" rx="1.5" fill="#7F77DD"/>
+<g transform="translate(50, 237)" class="icon-pulse-2-ba"><ellipse cx="0" cy="-4" rx="6" ry="2" fill="none" stroke="#534AB7" stroke-width="1"/><path d="M -6 -4 L -6 4" stroke="#534AB7" stroke-width="1"/><path d="M 6 -4 L 6 4" stroke="#534AB7" stroke-width="1"/><ellipse cx="0" cy="4" rx="6" ry="2" fill="none" stroke="#534AB7" stroke-width="1"/><ellipse cx="0" cy="0" rx="6" ry="2" fill="none" stroke="#534AB7" stroke-width="1" opacity="0.5"/></g>
+<text x="68" y="241" fill="#2C2C2A" font-size="12" font-weight="500">Data Retention</text>
+<rect x="194" y="224" width="212" height="28" rx="14" fill="#FCEBEB" stroke="#F7C1C1" stroke-width="0.4" opacity="0.6"/>
+<text x="300" y="241" text-anchor="middle" fill="#791F1F" font-size="11">Local PC · loss risk</text>
+<g class="check-pop-2-ba">
+<rect x="438" y="224" width="206" height="28" rx="14" fill="url(#after-bg-ba)" stroke="#9FE1CB" stroke-width="0.4"/>
+<g transform="translate(454, 238)">
+<circle cx="0" cy="0" r="6" fill="#1D9E75"/>
+<path d="M -2.5 0 L -1 2 L 3 -2" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="468" y="241" fill="#04342C" font-size="11" font-weight="500">Centralized in Lakehouse</text>
+</g>
+</g>
+
+<g class="row-3-ba">
+<rect x="20" y="274" width="640" height="62" rx="8" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<line x1="180" y1="274" x2="180" y2="336" stroke="#E8E6DD" stroke-width="0.3"/>
+<line x1="420" y1="274" x2="420" y2="336" stroke="#E8E6DD" stroke-width="0.3"/>
+<rect x="20" y="274" width="3" height="62" rx="1.5" fill="#7F77DD"/>
+<g transform="translate(50, 305)" class="icon-pulse-3-ba"><circle cx="-3" cy="0" r="3" fill="none" stroke="#534AB7" stroke-width="1"/><circle cx="3" cy="0" r="3" fill="none" stroke="#534AB7" stroke-width="1"/></g>
+<text x="68" y="309" fill="#2C2C2A" font-size="12" font-weight="500">Platform Unification</text>
+<rect x="194" y="292" width="212" height="28" rx="14" fill="#FCEBEB" stroke="#F7C1C1" stroke-width="0.4" opacity="0.6"/>
+<text x="300" y="309" text-anchor="middle" fill="#791F1F" font-size="11">Misaligned · no unified view</text>
+<g class="check-pop-3-ba">
+<rect x="438" y="292" width="206" height="28" rx="14" fill="url(#after-bg-ba)" stroke="#9FE1CB" stroke-width="0.4"/>
+<g transform="translate(454, 306)">
+<circle cx="0" cy="0" r="6" fill="#1D9E75"/>
+<path d="M -2.5 0 L -1 2 L 3 -2" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="468" y="309" fill="#04342C" font-size="11" font-weight="500">60+ networks standardized</text>
+</g>
+</g>
+
+<g class="row-4-ba">
+<rect x="20" y="342" width="640" height="62" rx="8" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<line x1="180" y1="342" x2="180" y2="404" stroke="#E8E6DD" stroke-width="0.3"/>
+<line x1="420" y1="342" x2="420" y2="404" stroke="#E8E6DD" stroke-width="0.3"/>
+<rect x="20" y="342" width="3" height="62" rx="1.5" fill="#7F77DD"/>
+<g transform="translate(50, 373)" class="icon-pulse-4-ba"><path d="M 0 -5 L 0 3 M -3 0 L 0 3 L 3 0" fill="none" stroke="#534AB7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><line x1="-5" y1="5" x2="5" y2="5" stroke="#534AB7" stroke-width="1.2" stroke-linecap="round"/></g>
+<text x="68" y="377" fill="#2C2C2A" font-size="12" font-weight="500">Data Collection</text>
+<rect x="194" y="360" width="212" height="28" rx="14" fill="#FCEBEB" stroke="#F7C1C1" stroke-width="0.4" opacity="0.6"/>
+<text x="300" y="377" text-anchor="middle" fill="#791F1F" font-size="11">Manual weekly download</text>
+<g class="check-pop-4-ba">
+<rect x="438" y="360" width="206" height="28" rx="14" fill="url(#after-bg-ba)" stroke="#9FE1CB" stroke-width="0.4"/>
+<g transform="translate(454, 374)">
+<circle cx="0" cy="0" r="6" fill="#1D9E75"/>
+<path d="M -2.5 0 L -1 2 L 3 -2" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="468" y="377" fill="#04342C" font-size="11" font-weight="500">API-based daily auto</text>
+</g>
+</g>
+
+<g class="row-5-ba">
+<rect x="20" y="410" width="640" height="62" rx="8" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<line x1="180" y1="410" x2="180" y2="472" stroke="#E8E6DD" stroke-width="0.3"/>
+<line x1="420" y1="410" x2="420" y2="472" stroke="#E8E6DD" stroke-width="0.3"/>
+<rect x="20" y="410" width="3" height="62" rx="1.5" fill="#7F77DD"/>
+<g transform="translate(50, 441)" class="icon-pulse-5-ba"><circle cx="0" cy="0" r="6" fill="none" stroke="#534AB7" stroke-width="1"/><line x1="0" y1="-2" x2="0" y2="0" stroke="#534AB7" stroke-width="1.2" stroke-linecap="round"/><circle cx="0" cy="2" r="0.6" fill="#534AB7"/></g>
+<text x="68" y="445" fill="#2C2C2A" font-size="12" font-weight="500">Error Response</text>
+<rect x="194" y="428" width="212" height="28" rx="14" fill="#FCEBEB" stroke="#F7C1C1" stroke-width="0.4" opacity="0.6"/>
+<text x="300" y="445" text-anchor="middle" fill="#791F1F" font-size="11">Delayed recognition</text>
+<g class="check-pop-5-ba">
+<rect x="438" y="428" width="206" height="28" rx="14" fill="url(#after-bg-ba)" stroke="#9FE1CB" stroke-width="0.4"/>
+<g transform="translate(454, 442)">
+<circle cx="0" cy="0" r="6" fill="#1D9E75"/>
+<path d="M -2.5 0 L -1 2 L 3 -2" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<text x="468" y="445" fill="#04342C" font-size="11" font-weight="500">Same-day remediation</text>
+</g>
+</g>
+
+<line x1="406" y1="170" x2="438" y2="170" stroke="#9FE1CB" stroke-width="0.8" class="arrow-flow-ba"/>
+<line x1="406" y1="238" x2="438" y2="238" stroke="#9FE1CB" stroke-width="0.8" class="arrow-flow-ba"/>
+<line x1="406" y1="306" x2="438" y2="306" stroke="#9FE1CB" stroke-width="0.8" class="arrow-flow-ba"/>
+<line x1="406" y1="374" x2="438" y2="374" stroke="#9FE1CB" stroke-width="0.8" class="arrow-flow-ba"/>
+<line x1="406" y1="442" x2="438" y2="442" stroke="#9FE1CB" stroke-width="0.8" class="arrow-flow-ba"/>
+</svg>
+</section>
+
+
+<!-- KEY IMPROVEMENTS -->
+<section class="section">
+<svg width="100%" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="gov-grad-ki" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EEEDFE"/><stop offset="100%" stop-color="#CECBF6"/></linearGradient>
+<linearGradient id="auto-grad-ki" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E1F5EE"/><stop offset="100%" stop-color="#9FE1CB"/></linearGradient>
+<radialGradient id="gov-glow-ki" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#7F77DD" stop-opacity="0.18"/><stop offset="100%" stop-color="#7F77DD" stop-opacity="0"/></radialGradient>
+<radialGradient id="auto-glow-ki" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#1D9E75" stop-opacity="0.22"/><stop offset="100%" stop-color="#1D9E75" stop-opacity="0"/></radialGradient>
+<style>
+.fade-card-1-ki { animation: fadein-ki 0.6s ease-out backwards; animation-delay: 0.1s; }
+.fade-card-2-ki { animation: fadein-ki 0.6s ease-out backwards; animation-delay: 0.7s; }
+@keyframes fadein-ki { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.bullet-1-1-ki { animation: bulletin-ki 0.4s ease-out backwards; animation-delay: 0.3s; }
+.bullet-1-2-ki { animation: bulletin-ki 0.4s ease-out backwards; animation-delay: 0.4s; }
+.bullet-1-3-ki { animation: bulletin-ki 0.4s ease-out backwards; animation-delay: 0.5s; }
+.bullet-2-1-ki { animation: bulletin-ki 0.4s ease-out backwards; animation-delay: 0.9s; }
+.bullet-2-2-ki { animation: bulletin-ki 0.4s ease-out backwards; animation-delay: 1.0s; }
+.bullet-2-3-ki { animation: bulletin-ki 0.4s ease-out backwards; animation-delay: 1.1s; }
+@keyframes bulletin-ki { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
+.glow-pulse-1-ki { animation: glowpulse-ki 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.glow-pulse-2-ki { animation: glowpulse-ki 3s ease-in-out infinite 1.5s; transform-origin: center; transform-box: fill-box; }
+@keyframes glowpulse-ki { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+.dot-pulse-1-ki { animation: dotpulse-ki 2s ease-in-out infinite; }
+.dot-pulse-2-ki { animation: dotpulse-ki 2s ease-in-out infinite 0.3s; }
+.dot-pulse-3-ki { animation: dotpulse-ki 2s ease-in-out infinite 0.6s; }
+@keyframes dotpulse-ki { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+.number-rotate-1-ki { animation: numpulse-ki 3s ease-in-out infinite; }
+.number-rotate-2-ki { animation: numpulse-ki 3s ease-in-out infinite 1.5s; }
+@keyframes numpulse-ki { 0%, 100% { opacity: 1; } 50% { opacity: 0.75; } }
+.tag-pop-1-ki { animation: tagpop-ki 0.5s ease-out backwards; animation-delay: 0.5s; transform-origin: left; transform-box: fill-box; }
+.tag-pop-2-ki { animation: tagpop-ki 0.5s ease-out backwards; animation-delay: 1.2s; transform-origin: left; transform-box: fill-box; }
+@keyframes tagpop-ki { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+</style>
+</defs>
+<text x="40" y="40" font-size="22" font-weight="600" fill="#2C2C2A">Key Improvements</text>
+<text x="40" y="62" fill="#5F5E5A" font-size="13">Two core wins from the new pipeline</text>
+<g class="fade-card-1-ki">
+<rect x="20" y="90" width="640" height="140" rx="14" fill="#FFFFFF" stroke="#CECBF6" stroke-width="0.5"/>
+<rect x="20" y="90" width="3" height="140" rx="1.5" fill="#7F77DD"/>
+<g transform="translate(60, 122)" class="number-rotate-1-ki">
+<circle cx="0" cy="0" r="18" fill="url(#gov-grad-ki)" stroke="#534AB7" stroke-width="0.8"/>
+<text x="0" y="0" text-anchor="middle" dominant-baseline="central" fill="#3C3489" font-size="14" font-weight="500">01</text>
+</g>
+<text x="92" y="116" fill="#3C3489" font-size="10" letter-spacing="1.2" font-weight="500">DATA GOVERNANCE</text>
+<text x="92" y="138" font-size="15" font-weight="500" fill="#2C2C2A">Single source of truth established</text>
+<g class="tag-pop-1-ki">
+<rect x="450" y="106" width="190" height="22" rx="11" fill="#EEEDFE" stroke="#CECBF6" stroke-width="0.5"/>
+<text x="463" y="120" fill="#3C3489" font-size="10" font-weight="500">60+ tables → 4 unified Gold</text>
+</g>
+<g class="bullet-1-1-ki">
+<circle cx="100" cy="166" r="2.5" fill="#7F77DD" class="dot-pulse-1-ki"/>
+<text x="112" y="170" fill="#444441" font-size="12">Centrally ingested into Fabric Lakehouse with permanent retention</text>
+</g>
+<g class="bullet-1-2-ki">
+<circle cx="100" cy="194" r="2.5" fill="#7F77DD" class="dot-pulse-2-ki"/>
+<text x="112" y="198" fill="#444441" font-size="12">Final analysis uses 4 unified Gold tables instead of 60+ direct connections</text>
+</g>
+</g>
+<g class="fade-card-2-ki">
+<rect x="20" y="240" width="640" height="170" rx="14" fill="#FFFFFF" stroke="#9FE1CB" stroke-width="0.5"/>
+<rect x="20" y="240" width="3" height="170" rx="1.5" fill="#1D9E75"/>
+<g transform="translate(60, 272)" class="number-rotate-2-ki">
+<circle cx="0" cy="0" r="18" fill="url(#auto-grad-ki)" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="0" y="0" text-anchor="middle" dominant-baseline="central" fill="#04342C" font-size="14" font-weight="500">02</text>
+</g>
+<text x="92" y="266" fill="#0F6E56" font-size="10" letter-spacing="1.2" font-weight="500">AUTOMATION &amp; PRESERVATION</text>
+<text x="92" y="288" font-size="15" font-weight="500" fill="#2C2C2A">Daily auto-pipeline live</text>
+<g class="tag-pop-2-ki">
+<rect x="490" y="256" width="150" height="22" rx="11" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.5"/>
+<text x="503" y="270" fill="#0F6E56" font-size="10" font-weight="500">100% E2E automation</text>
+</g>
+<g class="bullet-2-1-ki">
+<circle cx="100" cy="316" r="2.5" fill="#1D9E75" class="dot-pulse-1-ki"/>
+<text x="112" y="320" fill="#444441" font-size="12">Bronze → Silver → Gold runs daily with same-day Run History resolution</text>
+</g>
+<g class="bullet-2-2-ki">
+<circle cx="100" cy="344" r="2.5" fill="#1D9E75" class="dot-pulse-2-ki"/>
+<text x="112" y="348" fill="#444441" font-size="12">API-based collection replaces manual weekly reporting workflow</text>
+</g>
+<g class="bullet-2-3-ki">
+<circle cx="100" cy="372" r="2.5" fill="#1D9E75" class="dot-pulse-3-ki"/>
+<text x="112" y="376" fill="#444441" font-size="12">All historical data safely preserved in Fabric Lakehouse</text>
+</g>
+</g>
+</svg>
+</section>
+
+
+<!-- ARCHITECTURE -->
+<section class="section">
+<svg width="100%" viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow-arch" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 2L8 5L2 8" fill="none" stroke="context-stroke" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<linearGradient id="src-grad-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EEEDFE"/><stop offset="100%" stop-color="#CECBF6"/></linearGradient>
+<linearGradient id="ingest-grad-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FBEAF0"/><stop offset="100%" stop-color="#F4C0D1"/></linearGradient>
+<linearGradient id="bronze-grad-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FAEEDA"/><stop offset="100%" stop-color="#FAC775"/></linearGradient>
+<linearGradient id="silver-grad-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F1EFE8"/><stop offset="100%" stop-color="#D3D1C7"/></linearGradient>
+<linearGradient id="gold-grad-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E1F5EE"/><stop offset="100%" stop-color="#9FE1CB"/></linearGradient>
+<linearGradient id="semantic-grad-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E6F1FB"/><stop offset="100%" stop-color="#B5D4F4"/></linearGradient>
+<linearGradient id="bi-grad-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E6F1FB"/><stop offset="100%" stop-color="#0C447C"/></linearGradient>
+<style>
+.particle-a { animation: stream-a 2.6s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+.particle-2-a { animation: stream-a 2.6s cubic-bezier(0.45, 0, 0.55, 1) infinite 0.6s; }
+.particle-3-a { animation: stream-a 2.6s cubic-bezier(0.45, 0, 0.55, 1) infinite 1.3s; }
+@keyframes stream-a { 0% { offset-distance: 0%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+.icon-pulse-a { animation: iconpulse-a 2s ease-in-out infinite; }
+@keyframes iconpulse-a { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+.icon-float-a { animation: float-a 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+.icon-float-2-a { animation: float-a 3s ease-in-out infinite 1s; transform-origin: center; transform-box: fill-box; }
+.icon-float-3-a { animation: float-a 3s ease-in-out infinite 2s; transform-origin: center; transform-box: fill-box; }
+@keyframes float-a { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+.live-pulse-a { animation: livepulse-a 1.8s ease-in-out infinite; }
+.live-ring-a { animation: livering-a 1.8s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes livepulse-a { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+@keyframes livering-a { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.5); opacity: 0; } }
+</style>
+</defs>
+<text x="40" y="40" font-size="22" font-weight="600" fill="#2C2C2A">End-to-End Architecture</text>
+<text x="40" y="62" fill="#5F5E5A" font-size="13">Source · ingestion · lakehouse · semantic · dashboard</text>
+<g><circle cx="608" cy="52" r="12" fill="#1D9E75" opacity="0.25" class="live-ring-a"/><circle cx="608" cy="52" r="4" fill="#1D9E75" class="live-pulse-a"/><text x="622" y="56" fill="#0F6E56" font-size="12" font-weight="500">live</text></g>
+<rect x="20" y="90" width="640" height="252" rx="16" fill="#FAFAF7" stroke="#E8E6DD" stroke-width="0.5"/>
+<line x1="40" y1="110" x2="56" y2="110" stroke="#D3D1C7" stroke-width="0.5"/><line x1="40" y1="110" x2="40" y2="126" stroke="#D3D1C7" stroke-width="0.5"/>
+<line x1="640" y1="110" x2="624" y2="110" stroke="#D3D1C7" stroke-width="0.5"/><line x1="640" y1="110" x2="640" y2="126" stroke="#D3D1C7" stroke-width="0.5"/>
+<line x1="40" y1="322" x2="56" y2="322" stroke="#D3D1C7" stroke-width="0.5"/><line x1="40" y1="322" x2="40" y2="306" stroke="#D3D1C7" stroke-width="0.5"/>
+<line x1="640" y1="322" x2="624" y2="322" stroke="#D3D1C7" stroke-width="0.5"/><line x1="640" y1="322" x2="640" y2="306" stroke="#D3D1C7" stroke-width="0.5"/>
+<g class="icon-float-a">
+<rect x="34" y="130" width="96" height="48" rx="10" fill="url(#src-grad-a)" stroke="#7F77DD" stroke-width="0.5"/>
+<circle cx="46" cy="142" r="2" fill="#534AB7"/><circle cx="53" cy="142" r="2" fill="#534AB7" opacity="0.6"/>
+<text x="84" y="150" text-anchor="middle" dominant-baseline="central" fill="#3C3489" font-size="12" font-weight="500">30+ APIs</text>
+<text x="82" y="168" text-anchor="middle" dominant-baseline="central" fill="#534AB7" font-size="9">OAuth · API Key</text>
+</g>
+<g class="icon-float-2-a">
+<rect x="34" y="188" width="96" height="48" rx="10" fill="url(#src-grad-a)" stroke="#7F77DD" stroke-width="0.5"/>
+<circle cx="46" cy="200" r="2" fill="#534AB7"/><circle cx="53" cy="200" r="2" fill="#534AB7" opacity="0.6"/>
+<text x="84" y="208" text-anchor="middle" dominant-baseline="central" fill="#3C3489" font-size="12" font-weight="500">Email reports</text>
+<text x="82" y="226" text-anchor="middle" dominant-baseline="central" fill="#534AB7" font-size="9">via Power Automate</text>
+</g>
+<g class="icon-float-3-a">
+<rect x="34" y="246" width="96" height="48" rx="10" fill="url(#src-grad-a)" stroke="#7F77DD" stroke-width="0.5"/>
+<circle cx="46" cy="258" r="2" fill="#534AB7"/><circle cx="53" cy="258" r="2" fill="#534AB7" opacity="0.6"/>
+<text x="84" y="266" text-anchor="middle" dominant-baseline="central" fill="#3C3489" font-size="12" font-weight="500">Historical</text>
+<text x="82" y="284" text-anchor="middle" dominant-baseline="central" fill="#534AB7" font-size="9">Migrated data</text>
+</g>
+<g>
+<rect x="180" y="188" width="54" height="48" rx="10" fill="url(#ingest-grad-a)" stroke="#993556" stroke-width="0.5"/>
+<g transform="translate(192, 206)" class="icon-pulse-a">
+<circle cx="0" cy="0" r="6" fill="none" stroke="#993556" stroke-width="1.2"/>
+<circle cx="0" cy="0" r="1.5" fill="#993556"/>
+<line x1="-3" y1="-2" x2="-2" y2="-1" stroke="#993556" stroke-width="1" stroke-linecap="round"/>
+<line x1="3" y1="-2" x2="2" y2="-1" stroke="#993556" stroke-width="1" stroke-linecap="round"/>
+</g>
+<text x="207" y="226" text-anchor="middle" dominant-baseline="central" fill="#72243E" font-size="10" font-weight="500">Auto-Ingest</text>
+</g>
+<rect x="280" y="150" width="220" height="140" rx="14" fill="#FFFFFF" stroke="#185FA5" stroke-width="0.5" stroke-dasharray="3 3" opacity="0.7"/>
+<text x="287" y="166" fill="#5F5E5A" font-size="10" letter-spacing="0.6" font-weight="500">FABRIC LAKEHOUSE · SPARK</text>
+<rect x="295" y="188" width="60" height="68" rx="10" fill="url(#bronze-grad-a)" stroke="#BA7517" stroke-width="0.5"/>
+<text x="325" y="210" text-anchor="middle" dominant-baseline="central" fill="#633806" font-size="12" font-weight="500">Bronze</text>
+<text x="325" y="230" text-anchor="middle" dominant-baseline="central" fill="#854F0B" font-size="9">Raw</text>
+<text x="325" y="242" text-anchor="middle" dominant-baseline="central" fill="#854F0B" font-size="9">delta</text>
+<rect x="360" y="188" width="60" height="68" rx="10" fill="url(#silver-grad-a)" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="390" y="208" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A" font-size="12" font-weight="500">Silver</text>
+<text x="390" y="226" text-anchor="middle" dominant-baseline="central" fill="#444441" font-size="9">Schema</text>
+<text x="390" y="238" text-anchor="middle" dominant-baseline="central" fill="#444441" font-size="9">validated</text>
+<text x="390" y="250" text-anchor="middle" dominant-baseline="central" fill="#444441" font-size="9">deduped</text>
+<rect x="425" y="188" width="60" height="68" rx="10" fill="url(#gold-grad-a)" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="455" y="210" text-anchor="middle" dominant-baseline="central" fill="#04342C" font-size="12" font-weight="500">Gold</text>
+<text x="455" y="230" text-anchor="middle" dominant-baseline="central" fill="#0F6E56" font-size="9">Star</text>
+<text x="455" y="242" text-anchor="middle" dominant-baseline="central" fill="#0F6E56" font-size="9">schema</text>
+<g transform="translate(295, 268)" opacity="0.9">
+<circle cx="0" cy="-0.5" r="3" fill="none" stroke="#185FA5" stroke-width="0.7"/>
+<line x1="0" y1="-0.5" x2="0" y2="-2" stroke="#185FA5" stroke-width="0.7" stroke-linecap="round"/>
+<line x1="0" y1="-0.5" x2="1.5" y2="-0.5" stroke="#185FA5" stroke-width="0.7" stroke-linecap="round"/>
+</g>
+<text x="304" y="271" fill="#185FA5" font-size="9" letter-spacing="0.4" font-weight="500">Scheduled daily run</text>
+<g>
+<rect x="531" y="188" width="54" height="48" rx="10" fill="url(#semantic-grad-a)" stroke="#185FA5" stroke-width="0.5"/>
+<g transform="translate(544, 206)">
+<circle cx="0" cy="0" r="1.8" fill="#185FA5"/>
+<circle cx="-5" cy="-3" r="1.2" fill="#185FA5" opacity="0.7"/>
+<circle cx="5" cy="-3" r="1.2" fill="#185FA5" opacity="0.7"/>
+<circle cx="-5" cy="3" r="1.2" fill="#185FA5" opacity="0.7"/>
+<circle cx="5" cy="3" r="1.2" fill="#185FA5" opacity="0.7"/>
+<line x1="0" y1="0" x2="-5" y2="-3" stroke="#185FA5" stroke-width="0.5"/>
+<line x1="0" y1="0" x2="5" y2="-3" stroke="#185FA5" stroke-width="0.5"/>
+<line x1="0" y1="0" x2="-5" y2="3" stroke="#185FA5" stroke-width="0.5"/>
+<line x1="0" y1="0" x2="5" y2="3" stroke="#185FA5" stroke-width="0.5"/>
+</g>
+<text x="568" y="228" text-anchor="middle" dominant-baseline="central" fill="#0C447C" font-size="10" font-weight="500">Semantic</text>
+</g>
+<g class="icon-float-a">
+<rect x="611" y="188" width="46" height="48" rx="8" fill="url(#bi-grad-a)" stroke="#185FA5" stroke-width="0.5"/>
+<rect x="617" y="208" width="3.5" height="20" rx="0.8" fill="#0C447C" opacity="0.7"/>
+<rect x="624" y="202" width="3.5" height="26" rx="0.8" fill="#0C447C" opacity="0.85"/>
+<rect x="631" y="198" width="3.5" height="30" rx="0.8" fill="#0C447C"/>
+<rect x="638" y="204" width="3.5" height="24" rx="0.8" fill="#0C447C" opacity="0.85"/>
+<rect x="645" y="200" width="3.5" height="28" rx="0.8" fill="#0C447C" opacity="0.9"/>
+<text x="634" y="180" text-anchor="middle" dominant-baseline="central" fill="#042C53" font-size="9" font-weight="500">Power BI</text>
+</g>
+<path d="M 130 154 Q 152 154, 162 180 Q 168 198, 180 206" fill="none" stroke="#7F77DD" stroke-width="1" marker-end="url(#arrow-arch)"/>
+<line x1="130" y1="212" x2="180" y2="212" stroke="#7F77DD" stroke-width="1" marker-end="url(#arrow-arch)"/>
+<path d="M 130 270 Q 152 270, 162 245 Q 168 225, 180 218" fill="none" stroke="#7F77DD" stroke-width="1" marker-end="url(#arrow-arch)"/>
+<circle r="2.2" fill="#7F77DD" class="particle-a" style="offset-path: path('M 130 154 Q 152 154, 162 180 Q 168 198, 180 206');"/>
+<circle r="2.2" fill="#7F77DD" class="particle-2-a" style="offset-path: path('M 130 212 L 180 212');"/>
+<circle r="2.2" fill="#7F77DD" class="particle-3-a" style="offset-path: path('M 130 270 Q 152 270, 162 245 Q 168 225, 180 218');"/>
+<line x1="234" y1="212" x2="295" y2="212" stroke="#993556" stroke-width="1" marker-end="url(#arrow-arch)"/>
+<line x1="355" y1="212" x2="360" y2="212" stroke="#BA7517" stroke-width="0.8"/>
+<line x1="420" y1="212" x2="425" y2="212" stroke="#5F5E5A" stroke-width="0.8"/>
+<line x1="485" y1="212" x2="531" y2="212" stroke="#0F6E56" stroke-width="1" marker-end="url(#arrow-arch)"/>
+<line x1="585" y1="212" x2="611" y2="212" stroke="#185FA5" stroke-width="1" marker-end="url(#arrow-arch)"/>
+<circle r="2.2" fill="#993556" class="particle-a" style="offset-path: path('M 234 212 L 295 212');"/>
+<circle r="2.2" fill="#993556" class="particle-3-a" style="offset-path: path('M 234 212 L 295 212');"/>
+<circle r="2.2" fill="#1D9E75" class="particle-a" style="offset-path: path('M 485 212 L 531 212');"/>
+<circle r="2.2" fill="#1D9E75" class="particle-3-a" style="offset-path: path('M 485 212 L 531 212');"/>
+<circle r="2" fill="#185FA5" class="particle-2-a" style="offset-path: path('M 585 212 L 611 212');"/>
+<text x="82" y="338" text-anchor="middle" fill="#5F5E5A" font-size="10" letter-spacing="0.5">SOURCE</text>
+<text x="207" y="338" text-anchor="middle" fill="#5F5E5A" font-size="10" letter-spacing="0.5">AUTO-INGEST</text>
+<text x="325" y="338" text-anchor="middle" fill="#5F5E5A" font-size="10" letter-spacing="0.5">RAW</text>
+<text x="390" y="338" text-anchor="middle" fill="#5F5E5A" font-size="10" letter-spacing="0.5">CLEANSE</text>
+<text x="455" y="338" text-anchor="middle" fill="#5F5E5A" font-size="10" letter-spacing="0.5">MODEL</text>
+<text x="558" y="338" text-anchor="middle" fill="#5F5E5A" font-size="10" letter-spacing="0.5">SEMANTIC</text>
+<text x="634" y="338" text-anchor="middle" fill="#5F5E5A" font-size="10" letter-spacing="0.5">SERVE</text>
+</svg>
+</section>
+
+
+<!-- SEMANTIC MODEL -->
+<section class="section">
+<svg width="100%" viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="fact-grad-sm" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FAEEDA"/><stop offset="100%" stop-color="#FAC775"/></linearGradient>
+<linearGradient id="dim-grad-sm" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E1F5EE"/><stop offset="100%" stop-color="#9FE1CB"/></linearGradient>
+<radialGradient id="fact-glow-sm" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#854F0B" stop-opacity="0.35"/><stop offset="100%" stop-color="#854F0B" stop-opacity="0"/></radialGradient>
+<style>
+.tangled-shake-sm { animation: shake-sm 5s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes shake-sm { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(0.4px); } 40% { transform: translateX(-0.3px); } 60% { transform: translateX(0.3px); } 80% { transform: translateX(-0.4px); } }
+.tangle-fade-1-sm { animation: tanglefade-sm 4s ease-in-out infinite; }
+.tangle-fade-2-sm { animation: tanglefade-sm 4s ease-in-out infinite 0.7s; }
+.tangle-fade-3-sm { animation: tanglefade-sm 4s ease-in-out infinite 1.4s; }
+.tangle-fade-4-sm { animation: tanglefade-sm 4s ease-in-out infinite 2.1s; }
+@keyframes tanglefade-sm { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+.fact-glow-pulse-sm { animation: glowpulse-sm 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes glowpulse-sm { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
+.connection-flow-sm { stroke-dasharray: 4 4; animation: flow-sm 2.5s linear infinite; }
+@keyframes flow-sm { to { stroke-dashoffset: -16; } }
+.dim-pop-1-sm { animation: dimpop-sm 0.6s ease-out backwards; animation-delay: 0.3s; }
+.dim-pop-2-sm { animation: dimpop-sm 0.6s ease-out backwards; animation-delay: 0.5s; }
+.dim-pop-3-sm { animation: dimpop-sm 0.6s ease-out backwards; animation-delay: 0.7s; }
+.dim-pop-4-sm { animation: dimpop-sm 0.6s ease-out backwards; animation-delay: 0.9s; }
+@keyframes dimpop-sm { 0% { opacity: 0; transform: scale(0.7); } 60% { transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+.fact-pop-sm { animation: factpop-sm 0.8s ease-out backwards; animation-delay: 0.1s; transform-origin: center; transform-box: fill-box; }
+@keyframes factpop-sm { 0% { opacity: 0; transform: scale(0.6); } 70% { transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
+.particle-sm { animation: stream-sm 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+.particle-2-sm { animation: stream-sm 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite 0.6s; }
+.particle-3-sm { animation: stream-sm 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite 1.2s; }
+.particle-4-sm { animation: stream-sm 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite 1.8s; }
+@keyframes stream-sm { 0% { offset-distance: 0%; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+</style>
+</defs>
+<text x="40" y="40" font-size="22" font-weight="600" fill="#2C2C2A">Semantic Model: As-Is vs To-Be</text>
+<text x="40" y="62" fill="#5F5E5A" font-size="13">From fragmented connections to unified star schema</text>
+<g>
+<rect x="20" y="90" width="310" height="350" rx="14" fill="#FCEBEB" opacity="0.3"/>
+<rect x="20" y="90" width="310" height="350" rx="14" fill="none" stroke="#F7C1C1" stroke-width="0.5"/>
+<rect x="20" y="90" width="310" height="40" rx="14" fill="#F7C1C1" opacity="0.4"/>
+<rect x="20" y="116" width="310" height="14" fill="#F7C1C1" opacity="0.4"/>
+<text x="175" y="115" text-anchor="middle" fill="#791F1F" font-size="13" font-weight="500">As-Is</text>
+<text x="40" y="146" fill="#A32D2D" font-size="9" letter-spacing="0.5" font-weight="500">60+ FRAGMENTED TABLES</text>
+<g class="tangled-shake-sm">
+<rect x="40" y="158" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="84" y="158" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="128" y="158" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="172" y="158" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="216" y="158" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="260" y="158" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="40" y="190" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="84" y="190" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="128" y="190" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="172" y="190" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="216" y="190" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="260" y="190" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="40" y="222" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="84" y="222" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="128" y="222" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="172" y="222" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="216" y="222" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="260" y="222" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="40" y="254" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="84" y="254" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="128" y="254" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="172" y="254" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="216" y="254" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="260" y="254" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="40" y="286" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="84" y="286" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="128" y="286" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="172" y="286" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="216" y="286" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="260" y="286" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="40" y="318" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="84" y="318" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="128" y="318" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="172" y="318" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="216" y="318" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/><rect x="260" y="318" width="38" height="22" rx="3" fill="#F7C1C1" stroke="#A32D2D" stroke-width="0.4"/>
+<g class="tangle-fade-1-sm">
+<line x1="59" y1="180" x2="235" y2="222" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="103" y1="180" x2="59" y2="254" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="147" y1="180" x2="279" y2="286" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="191" y1="180" x2="103" y2="318" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="235" y1="180" x2="147" y2="254" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="279" y1="180" x2="191" y2="318" stroke="#A32D2D" stroke-width="0.4"/>
+</g>
+<g class="tangle-fade-2-sm">
+<line x1="59" y1="212" x2="279" y2="254" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="103" y1="212" x2="147" y2="286" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="147" y1="212" x2="59" y2="318" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="191" y1="212" x2="235" y2="318" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="235" y1="212" x2="103" y2="286" stroke="#A32D2D" stroke-width="0.4"/>
+</g>
+<g class="tangle-fade-3-sm">
+<line x1="59" y1="244" x2="191" y2="286" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="103" y1="244" x2="235" y2="318" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="147" y1="244" x2="279" y2="318" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="191" y1="244" x2="59" y2="286" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="235" y1="244" x2="103" y2="318" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="279" y1="244" x2="147" y2="318" stroke="#A32D2D" stroke-width="0.4"/>
+</g>
+<g class="tangle-fade-4-sm">
+<line x1="59" y1="276" x2="235" y2="158" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="103" y1="276" x2="279" y2="190" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="147" y1="276" x2="59" y2="190" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="191" y1="276" x2="103" y2="158" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="59" y1="308" x2="279" y2="158" stroke="#A32D2D" stroke-width="0.4"/>
+<line x1="235" y1="308" x2="147" y2="158" stroke="#A32D2D" stroke-width="0.4"/>
+</g>
+</g>
+<text x="40" y="368" fill="#A32D2D" font-size="11">60+ direct table connections</text>
+<text x="40" y="386" fill="#A32D2D" font-size="11">Frequent loading failures</text>
+<text x="40" y="404" fill="#A32D2D" font-size="11">Difficult to maintain</text>
+<text x="40" y="422" fill="#A32D2D" font-size="11">No single source of truth</text>
+</g>
+<g>
+<rect x="350" y="90" width="310" height="350" rx="14" fill="#E1F5EE" opacity="0.25"/>
+<rect x="350" y="90" width="310" height="350" rx="14" fill="none" stroke="#9FE1CB" stroke-width="0.5"/>
+<rect x="350" y="90" width="310" height="40" rx="14" fill="#9FE1CB" opacity="0.4"/>
+<rect x="350" y="116" width="310" height="14" fill="#9FE1CB" opacity="0.4"/>
+<text x="505" y="115" text-anchor="middle" fill="#04342C" font-size="13" font-weight="500">To-Be</text>
+<text x="370" y="146" fill="#0F6E56" font-size="9" letter-spacing="0.5" font-weight="500">STAR SCHEMA · FACT + 4 DIMENSIONS</text>
+<circle cx="505" cy="280" r="65" fill="url(#fact-glow-sm)" class="fact-glow-pulse-sm"/>
+<g class="dim-pop-1-sm">
+<rect x="380" y="180" width="84" height="44" rx="8" fill="url(#dim-grad-sm)" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="422" y="198" text-anchor="middle" dominant-baseline="central" fill="#04342C" font-size="11" font-weight="500">DimDate</text>
+<text x="422" y="214" text-anchor="middle" dominant-baseline="central" fill="#0F6E56" font-size="9">time hierarchy</text>
+</g>
+<g class="dim-pop-2-sm">
+<rect x="546" y="180" width="84" height="44" rx="8" fill="url(#dim-grad-sm)" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="588" y="198" text-anchor="middle" dominant-baseline="central" fill="#04342C" font-size="11" font-weight="500">DimNetwork</text>
+<text x="588" y="214" text-anchor="middle" dominant-baseline="central" fill="#0F6E56" font-size="9">ad networks</text>
+</g>
+<g class="dim-pop-3-sm">
+<rect x="380" y="336" width="84" height="44" rx="8" fill="url(#dim-grad-sm)" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="422" y="354" text-anchor="middle" dominant-baseline="central" fill="#04342C" font-size="11" font-weight="500">DimCategory</text>
+<text x="422" y="370" text-anchor="middle" dominant-baseline="central" fill="#0F6E56" font-size="9">DA · RV</text>
+</g>
+<g class="dim-pop-4-sm">
+<rect x="546" y="336" width="84" height="44" rx="8" fill="url(#dim-grad-sm)" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="588" y="354" text-anchor="middle" dominant-baseline="central" fill="#04342C" font-size="11" font-weight="500">DimPlatform</text>
+<text x="588" y="370" text-anchor="middle" dominant-baseline="central" fill="#0F6E56" font-size="9">parent · sub</text>
+</g>
+<line x1="464" y1="224" x2="488" y2="262" stroke="#1D9E75" stroke-width="0.8" class="connection-flow-sm"/>
+<line x1="546" y1="224" x2="522" y2="262" stroke="#1D9E75" stroke-width="0.8" class="connection-flow-sm"/>
+<line x1="464" y1="336" x2="488" y2="298" stroke="#1D9E75" stroke-width="0.8" class="connection-flow-sm"/>
+<line x1="546" y1="336" x2="522" y2="298" stroke="#1D9E75" stroke-width="0.8" class="connection-flow-sm"/>
+<g class="fact-pop-sm">
+<rect x="463" y="258" width="84" height="44" rx="8" fill="url(#fact-grad-sm)" stroke="#BA7517" stroke-width="1"/>
+<text x="505" y="276" text-anchor="middle" dominant-baseline="central" fill="#633806" font-size="11" font-weight="500">FactRevenue</text>
+<text x="505" y="292" text-anchor="middle" dominant-baseline="central" fill="#854F0B" font-size="9">measure · revenue</text>
+</g>
+<circle r="2" fill="#1D9E75" class="particle-sm" style="offset-path: path('M 464 224 L 488 262');"/>
+<circle r="2" fill="#1D9E75" class="particle-2-sm" style="offset-path: path('M 546 224 L 522 262');"/>
+<circle r="2" fill="#1D9E75" class="particle-3-sm" style="offset-path: path('M 464 336 L 488 298');"/>
+<circle r="2" fill="#1D9E75" class="particle-4-sm" style="offset-path: path('M 546 336 L 522 298');"/>
+<text x="370" y="406" fill="#0F6E56" font-size="11">Single fact + four dimensions</text>
+<text x="370" y="422" fill="#0F6E56" font-size="11">Designed for Power BI performance</text>
+</g>
+</svg>
+</section>
+
+
+<!-- DASHBOARD PREVIEW -->
+<section class="section">
+<svg width="100%" viewBox="0 0 680 1080" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="dash-bg-grad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#FFFFFF"/>
+<stop offset="100%" stop-color="#FAFAF7"/>
+</linearGradient>
+<linearGradient id="dash-accent-amber" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#FAEEDA"/>
+<stop offset="100%" stop-color="#FAC775"/>
+</linearGradient>
+<linearGradient id="dash-bar-grad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#BA7517" stop-opacity="0.85"/>
+<stop offset="100%" stop-color="#BA7517" stop-opacity="0.6"/>
+</linearGradient>
+<linearGradient id="dash-bar-grad-faded" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#BA7517" stop-opacity="0.35"/>
+<stop offset="100%" stop-color="#BA7517" stop-opacity="0.2"/>
+</linearGradient>
+<radialGradient id="dash-glow" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#BA7517" stop-opacity="0.18"/>
+<stop offset="100%" stop-color="#BA7517" stop-opacity="0"/>
+</radialGradient>
+<style>
+.dash-fade-1 { animation: dashfade 0.6s ease-out backwards; animation-delay: 0.1s; }
+.dash-fade-2 { animation: dashfade 0.6s ease-out backwards; animation-delay: 0.3s; }
+.dash-fade-3 { animation: dashfade 0.6s ease-out backwards; animation-delay: 0.5s; }
+.dash-fade-4 { animation: dashfade 0.6s ease-out backwards; animation-delay: 0.7s; }
+@keyframes dashfade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.bar-rise-1 { animation: barrise 0.9s ease-out backwards; animation-delay: 0.5s; transform-origin: bottom; transform-box: fill-box; }
+.bar-rise-2 { animation: barrise 0.9s ease-out backwards; animation-delay: 0.55s; transform-origin: bottom; transform-box: fill-box; }
+.bar-rise-3 { animation: barrise 0.9s ease-out backwards; animation-delay: 0.6s; transform-origin: bottom; transform-box: fill-box; }
+.bar-rise-4 { animation: barrise 0.9s ease-out backwards; animation-delay: 0.65s; transform-origin: bottom; transform-box: fill-box; }
+.bar-rise-5 { animation: barrise 0.9s ease-out backwards; animation-delay: 0.7s; transform-origin: bottom; transform-box: fill-box; }
+.bar-rise-6 { animation: barrise 0.9s ease-out backwards; animation-delay: 0.75s; transform-origin: bottom; transform-box: fill-box; }
+.bar-rise-7 { animation: barrise 0.9s ease-out backwards; animation-delay: 0.8s; transform-origin: bottom; transform-box: fill-box; }
+.bar-rise-8 { animation: barrise 0.9s ease-out backwards; animation-delay: 0.85s; transform-origin: bottom; transform-box: fill-box; }
+@keyframes barrise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.line-trace { stroke-dasharray: 600; stroke-dashoffset: 600; animation: linetrace 1.6s ease-out forwards; animation-delay: 1.0s; }
+@keyframes linetrace { to { stroke-dashoffset: 0; } }
+.kpi-pop-1 { animation: kpipop 0.5s ease-out backwards; animation-delay: 0.3s; }
+.kpi-pop-2 { animation: kpipop 0.5s ease-out backwards; animation-delay: 0.4s; }
+.kpi-pop-3 { animation: kpipop 0.5s ease-out backwards; animation-delay: 0.5s; }
+.kpi-pop-4 { animation: kpipop 0.5s ease-out backwards; animation-delay: 0.6s; }
+@keyframes kpipop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.donut-draw { stroke-dasharray: 251; stroke-dashoffset: 70; animation: donutdraw 1.4s ease-out forwards; animation-delay: 0.8s; }
+@keyframes donutdraw { from { stroke-dashoffset: 251; } to { stroke-dashoffset: 70; } }
+.dot-blink { animation: dotblink 2s ease-in-out infinite; }
+@keyframes dotblink { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+</style>
+</defs>
+
+<text x="40" y="40" font-size="22" font-weight="600" fill="#2C2C2A">Dashboard Preview</text>
+<text x="40" y="62" fill="#5F5E5A" font-size="13">Executive revenue dashboard · unifying parent and subsidiary in a single view</text>
+
+<!-- Watermark -->
+<g class="dash-fade-1">
+<rect x="528" y="44" width="132" height="22" rx="11" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.5"/>
+<circle cx="544" cy="55" r="2.5" fill="#BA7517" class="dot-blink"/>
+<text x="555" y="58" fill="#633806" font-size="10" font-weight="500">FAKE DATA · MOCKUP</text>
+</g>
+
+<!-- Background glow -->
+<circle cx="120" cy="200" r="160" fill="url(#dash-glow)"/>
+<circle cx="560" cy="700" r="180" fill="url(#dash-glow)" opacity="0.6"/>
+
+<!-- ============================================ -->
+<!-- ===== DASHBOARD 1: OVERVIEW (top) ===== -->
+<!-- ============================================ -->
+
+<g class="dash-fade-1">
+<rect x="20" y="90" width="640" height="470" rx="14" fill="url(#dash-bg-grad)" stroke="#E8E6DD" stroke-width="0.5"/>
+<rect x="20" y="90" width="640" height="3" rx="1.5" fill="#BA7517"/>
+
+<!-- Header -->
+<text x="40" y="118" fill="#2C2C2A" font-size="14" font-weight="600">Revenue Performance · Overview</text>
+<text x="40" y="135" fill="#5F5E5A" font-size="10">Parent Co. · Subsidiary · Consolidated view</text>
+
+<!-- Tab pills -->
+<rect x="500" y="106" width="68" height="22" rx="11" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.5"/>
+<text x="534" y="120" text-anchor="middle" fill="#633806" font-size="10" font-weight="500">Overview</text>
+<rect x="572" y="106" width="68" height="22" rx="11" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="606" y="120" text-anchor="middle" fill="#5F5E5A" font-size="10">Monthly →</text>
+
+<circle cx="650" cy="118" r="3" fill="#1D9E75" class="dot-blink"/>
+<line x1="40" y1="148" x2="640" y2="148" stroke="#E8E6DD" stroke-width="0.3"/>
+</g>
+
+<!-- KPI cards row -->
+<g class="kpi-pop-1">
+<rect x="40" y="162" width="148" height="66" rx="10" fill="url(#dash-accent-amber)" stroke="#FAC775" stroke-width="0.5"/>
+<rect x="40" y="162" width="3" height="66" rx="1.5" fill="#BA7517"/>
+<text x="56" y="180" fill="#854F0B" font-size="9" letter-spacing="0.8" font-weight="500">TOTAL REVENUE</text>
+<rect x="56" y="190" width="80" height="14" rx="2" fill="#633806" opacity="0.7"/>
+<text x="56" y="218" fill="#854F0B" font-size="9">▼ vs target</text>
+<rect x="116" y="211" width="40" height="6" rx="1" fill="#E24B4A" opacity="0.5"/>
+</g>
+
+<g class="kpi-pop-2">
+<rect x="196" y="162" width="148" height="66" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="212" y="180" fill="#5F5E5A" font-size="9" letter-spacing="0.8" font-weight="500">MONTHLY REVENUE</text>
+<rect x="212" y="190" width="68" height="14" rx="2" fill="#2C2C2A" opacity="0.85"/>
+<text x="212" y="218" fill="#5F5E5A" font-size="9">vs prev month</text>
+<rect x="284" y="211" width="40" height="6" rx="1" fill="#1D9E75" opacity="0.5"/>
+</g>
+
+<g class="kpi-pop-3">
+<rect x="352" y="162" width="148" height="66" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="368" y="180" fill="#5F5E5A" font-size="9" letter-spacing="0.8" font-weight="500">YTD YoY GROWTH</text>
+<rect x="368" y="190" width="60" height="14" rx="2" fill="#2C2C2A" opacity="0.85"/>
+<text x="368" y="218" fill="#5F5E5A" font-size="9">▼ year-over-year</text>
+<rect x="448" y="211" width="40" height="6" rx="1" fill="#E24B4A" opacity="0.5"/>
+</g>
+
+<g class="kpi-pop-4">
+<rect x="508" y="162" width="132" height="66" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="524" y="180" fill="#5F5E5A" font-size="9" letter-spacing="0.8" font-weight="500">KPI ATTAINMENT</text>
+<rect x="524" y="190" width="56" height="14" rx="2" fill="#1D9E75" opacity="0.85"/>
+<rect x="524" y="214" width="100" height="4" rx="2" fill="#E8E6DD"/>
+<rect x="524" y="214" width="78" height="4" rx="2" fill="#1D9E75"/>
+</g>
+
+<!-- Main bar chart -->
+<g class="dash-fade-2">
+<rect x="40" y="244" width="404" height="170" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="56" y="266" fill="#2C2C2A" font-size="11" font-weight="600">Monthly Revenue vs KPI Target</text>
+<text x="56" y="280" fill="#5F5E5A" font-size="9">Trailing 12 months · consolidated</text>
+
+<rect x="328" y="262" width="8" height="8" rx="1" fill="url(#dash-bar-grad)"/>
+<text x="340" y="269" fill="#5F5E5A" font-size="9">Revenue</text>
+<line x1="378" y1="266" x2="392" y2="266" stroke="#185FA5" stroke-width="1.5"/>
+<text x="396" y="269" fill="#5F5E5A" font-size="9">KPI</text>
+
+<line x1="64" y1="305" x2="424" y2="305" stroke="#E8E6DD" stroke-width="0.3" stroke-dasharray="2 2"/>
+<line x1="64" y1="335" x2="424" y2="335" stroke="#E8E6DD" stroke-width="0.3" stroke-dasharray="2 2"/>
+<line x1="64" y1="365" x2="424" y2="365" stroke="#E8E6DD" stroke-width="0.3" stroke-dasharray="2 2"/>
+<line x1="64" y1="395" x2="424" y2="395" stroke="#E8E6DD" stroke-width="0.4"/>
+
+<rect x="70" y="341" width="28" height="54" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-1"/><rect x="102" y="347" width="28" height="48" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-2"/><rect x="134" y="325" width="28" height="70" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-3"/><rect x="166" y="333" width="28" height="62" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-4"/><rect x="198" y="319" width="28" height="76" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-5"/><rect x="230" y="313" width="28" height="82" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-6"/><rect x="262" y="307" width="28" height="88" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-7"/><rect x="294" y="317" width="28" height="78" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-8"/><rect x="326" y="345" width="28" height="50" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-1"/><rect x="358" y="345" width="28" height="50" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-2"/><rect x="390" y="331" width="28" height="64" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-3"/><rect x="422" y="317" width="28" height="78" rx="2" fill="url(#dash-bar-grad)" class="bar-rise-4"/>
+
+<polyline points="84,322 112,318 140,300 168,308 196,294 224,288 252,280 280,300 308,335 336,335 364,310 392,294 420,300"
+  fill="none" stroke="#185FA5" stroke-width="1.5" class="line-trace"/>
+
+<circle cx="84" cy="322" r="2" fill="#185FA5"/>
+<circle cx="252" cy="280" r="2.5" fill="#185FA5"/>
+<circle cx="420" cy="300" r="2" fill="#185FA5"/>
+</g>
+
+<!-- Donut chart -->
+<g class="dash-fade-3">
+<rect x="452" y="244" width="188" height="170" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="468" y="266" fill="#2C2C2A" font-size="11" font-weight="600">Revenue Mix</text>
+<text x="468" y="280" fill="#5F5E5A" font-size="9">Programmatic vs Direct</text>
+
+<g transform="translate(546, 340)">
+<circle cx="0" cy="0" r="40" fill="none" stroke="#E8E6DD" stroke-width="10"/>
+<circle cx="0" cy="0" r="40" fill="none" stroke="#BA7517" stroke-width="10"
+  stroke-dasharray="251" stroke-dashoffset="70" transform="rotate(-90)" class="donut-draw" stroke-linecap="round"/>
+<text x="0" y="-3" text-anchor="middle" fill="#2C2C2A" font-size="14" font-weight="600">~70%</text>
+<text x="0" y="10" text-anchor="middle" fill="#5F5E5A" font-size="8">Programmatic</text>
+</g>
+
+<g transform="translate(468, 392)">
+<rect x="0" y="0" width="8" height="8" rx="1" fill="#BA7517"/>
+<text x="12" y="7" fill="#5F5E5A" font-size="9">Programmatic</text>
+<rect x="92" y="0" width="8" height="8" rx="1" fill="#D3D1C7"/>
+<text x="104" y="7" fill="#5F5E5A" font-size="9">Direct</text>
+</g>
+</g>
+
+<!-- Bottom row: 2 mini-cards (RV Programmatic removed) -->
+<g class="dash-fade-3">
+<rect x="40" y="430" width="296" height="110" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="56" y="450" fill="#2C2C2A" font-size="10" font-weight="600">DA · Programmatic</text>
+<text x="56" y="464" fill="#5F5E5A" font-size="9">Display ads</text>
+<rect x="56" y="476" width="60" height="10" rx="2" fill="#BA7517" opacity="0.7"/>
+<path d="M 60.0,499.0 L 83.6,497.2 L 107.3,499.9 L 130.9,495.3 L 154.5,493.5 L 178.2,496.2 L 201.8,492.6 L 225.5,489.8 L 249.1,493.5 L 272.7,495.3 L 296.4,491.7 L 320.0,493.5 L 320.0,510 L 60.0,510 Z" fill="url(#dash-bar-grad-faded)"/>
+<path d="M 60.0,499.0 L 83.6,497.2 L 107.3,499.9 L 130.9,495.3 L 154.5,493.5 L 178.2,496.2 L 201.8,492.6 L 225.5,489.8 L 249.1,493.5 L 272.7,495.3 L 296.4,491.7 L 320.0,493.5" fill="none" stroke="#BA7517" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+<rect x="344" y="430" width="296" height="110" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="360" y="450" fill="#2C2C2A" font-size="10" font-weight="600">DA · Direct</text>
+<text x="360" y="464" fill="#5F5E5A" font-size="9">Direct deals</text>
+<rect x="360" y="476" width="68" height="10" rx="2" fill="#BA7517" opacity="0.7"/>
+<path d="M 364.0,500.8 L 387.6,498.1 L 411.3,495.3 L 434.9,497.2 L 458.5,494.4 L 482.2,492.6 L 505.8,495.3 L 529.5,493.5 L 553.1,491.7 L 576.7,492.6 L 600.4,494.4 L 624.0,490.8 L 624.0,510 L 364.0,510 Z" fill="url(#dash-bar-grad-faded)"/>
+<path d="M 364.0,500.8 L 387.6,498.1 L 411.3,495.3 L 434.9,497.2 L 458.5,494.4 L 482.2,492.6 L 505.8,495.3 L 529.5,493.5 L 553.1,491.7 L 576.7,492.6 L 600.4,494.4 L 624.0,490.8" fill="none" stroke="#BA7517" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+
+<!-- ============================================ -->
+<!-- ===== DASHBOARD 2: MONTHLY DETAIL ===== -->
+<!-- ============================================ -->
+
+<g class="dash-fade-4">
+<rect x="20" y="590" width="640" height="470" rx="14" fill="url(#dash-bg-grad)" stroke="#E8E6DD" stroke-width="0.5"/>
+<rect x="20" y="590" width="640" height="3" rx="1.5" fill="#BA7517"/>
+
+<!-- Header -->
+<text x="40" y="618" fill="#2C2C2A" font-size="14" font-weight="600">Revenue Performance · Monthly Detail</text>
+<text x="40" y="635" fill="#5F5E5A" font-size="10">Drill-down by category · Programmatic vs Direct breakdown</text>
+
+<!-- Tab pills (Monthly active) -->
+<rect x="500" y="606" width="68" height="22" rx="11" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="534" y="620" text-anchor="middle" fill="#5F5E5A" font-size="10">← Overview</text>
+<rect x="572" y="606" width="68" height="22" rx="11" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.5"/>
+<text x="606" y="620" text-anchor="middle" fill="#633806" font-size="10" font-weight="500">Monthly</text>
+
+<circle cx="650" cy="618" r="3" fill="#1D9E75" class="dot-blink"/>
+<line x1="40" y1="648" x2="640" y2="648" stroke="#E8E6DD" stroke-width="0.3"/>
+</g>
+
+<!-- KPI cards row (similar layout, slightly different metrics) -->
+<g class="kpi-pop-1">
+<rect x="40" y="662" width="148" height="66" rx="10" fill="url(#dash-accent-amber)" stroke="#FAC775" stroke-width="0.5"/>
+<rect x="40" y="662" width="3" height="66" rx="1.5" fill="#BA7517"/>
+<text x="56" y="680" fill="#854F0B" font-size="9" letter-spacing="0.8" font-weight="500">TOTAL REVENUE</text>
+<rect x="56" y="690" width="80" height="14" rx="2" fill="#633806" opacity="0.7"/>
+<text x="56" y="718" fill="#854F0B" font-size="9">▼ vs target</text>
+<rect x="116" y="711" width="40" height="6" rx="1" fill="#E24B4A" opacity="0.5"/>
+</g>
+
+<g class="kpi-pop-2">
+<rect x="196" y="662" width="148" height="66" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="212" y="680" fill="#5F5E5A" font-size="9" letter-spacing="0.8" font-weight="500">MONTHLY REVENUE</text>
+<rect x="212" y="690" width="68" height="14" rx="2" fill="#2C2C2A" opacity="0.85"/>
+<text x="212" y="718" fill="#5F5E5A" font-size="9">vs prev month</text>
+<rect x="284" y="711" width="40" height="6" rx="1" fill="#E24B4A" opacity="0.5"/>
+</g>
+
+<g class="kpi-pop-3">
+<rect x="352" y="662" width="148" height="66" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="368" y="680" fill="#5F5E5A" font-size="9" letter-spacing="0.8" font-weight="500">MONTHLY YoY</text>
+<rect x="368" y="690" width="64" height="14" rx="2" fill="#2C2C2A" opacity="0.85"/>
+<text x="368" y="718" fill="#5F5E5A" font-size="9">▼ year-over-year</text>
+<rect x="448" y="711" width="40" height="6" rx="1" fill="#E24B4A" opacity="0.5"/>
+</g>
+
+<g class="kpi-pop-4">
+<rect x="508" y="662" width="132" height="66" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<text x="524" y="680" fill="#5F5E5A" font-size="9" letter-spacing="0.8" font-weight="500">ACHIEVEMENT %</text>
+<rect x="524" y="690" width="52" height="14" rx="2" fill="#1D9E75" opacity="0.85"/>
+<rect x="524" y="714" width="100" height="4" rx="2" fill="#E8E6DD"/>
+<rect x="524" y="714" width="78" height="4" rx="2" fill="#1D9E75"/>
+</g>
+
+<!-- Programmatic vs Direct breakdown table -->
+<g class="dash-fade-3">
+<rect x="40" y="744" width="600" height="180" rx="10" fill="#FFFFFF" stroke="#E8E6DD" stroke-width="0.5"/>
+<rect x="40" y="744" width="600" height="28" rx="10" fill="#FAEEDA"/>
+<rect x="40" y="760" width="600" height="12" fill="#FAEEDA"/>
+<text x="340" y="763" text-anchor="middle" fill="#633806" font-size="12" font-weight="600">Programmatic vs Direct</text>
+
+<!-- Table column headers -->
+<line x1="40" y1="784" x2="640" y2="784" stroke="#E8E6DD" stroke-width="0.4"/>
+<text x="60" y="798" fill="#2C2C2A" font-size="10" font-weight="600">Metric</text>
+
+<!-- Group: Prog -->
+<text x="248" y="798" text-anchor="middle" fill="#854F0B" font-size="10" font-weight="600">Prog</text>
+<line x1="172" y1="804" x2="324" y2="804" stroke="#BA7517" stroke-width="0.6"/>
+<text x="200" y="818" text-anchor="middle" fill="#5F5E5A" font-size="9">DA</text>
+<text x="248" y="818" text-anchor="middle" fill="#5F5E5A" font-size="9">RV</text>
+<text x="296" y="818" text-anchor="middle" fill="#5F5E5A" font-size="9">Subtotal</text>
+
+<!-- Vertical divider -->
+<line x1="356" y1="780" x2="356" y2="912" stroke="#E8E6DD" stroke-width="0.3"/>
+
+<!-- Group: Direct -->
+<text x="490" y="798" text-anchor="middle" fill="#2C2C2A" font-size="10" font-weight="600">Direct</text>
+<line x1="410" y1="804" x2="600" y2="804" stroke="#D3D1C7" stroke-width="0.6"/>
+<text x="430" y="818" text-anchor="middle" fill="#5F5E5A" font-size="9">DA</text>
+<text x="490" y="818" text-anchor="middle" fill="#5F5E5A" font-size="9">RV</text>
+<text x="560" y="818" text-anchor="middle" fill="#5F5E5A" font-size="9">Subtotal</text>
+
+<line x1="40" y1="826" x2="640" y2="826" stroke="#E8E6DD" stroke-width="0.4"/>
+
+<!-- Table rows: Target / Actual / Attn / YoY -->
+<rect x="40" y="830" width="600" height="18" fill="#FAFAF7" opacity="0.5"/><text x="60" y="842" fill="#2C2C2A" font-size="10" font-weight="500">Target KPI</text><rect x="178" y="835" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="226" y="835" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="274" y="835" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="408" y="835" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="468" y="835" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="538" y="835" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><text x="60" y="860" fill="#2C2C2A" font-size="10" font-weight="500">Actual</text><rect x="178" y="853" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="226" y="853" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="274" y="853" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="408" y="853" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="468" y="853" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="538" y="853" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="40" y="866" width="600" height="18" fill="#FAFAF7" opacity="0.5"/><text x="60" y="878" fill="#2C2C2A" font-size="10" font-weight="500">Attainment</text><rect x="178" y="871" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="226" y="871" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="274" y="871" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="408" y="871" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="468" y="871" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="538" y="871" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><text x="60" y="896" fill="#2C2C2A" font-size="10" font-weight="500">YoY %</text><rect x="178" y="889" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="226" y="889" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="274" y="889" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="408" y="889" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="468" y="889" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/><rect x="538" y="889" width="44" height="7" rx="1.5" fill="#2C2C2A" opacity="0.25"/>
+</g>
+
+</svg>
+</section>
+
+
+<!-- TECH STACK -->
+<section class="section">
+<svg width="100%" viewBox="0 0 680 334" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>
+.badge-pop { animation: badgepop 0.5s ease-out backwards; transform-origin: center; transform-box: fill-box; }
+@keyframes badgepop {
+0% { opacity: 0; transform: translateY(8px) scale(0.9); }
+100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+</style>
+</defs>
+<text x="40" y="40" font-size="22" font-weight="600" fill="#2C2C2A">Tech Stack</text>
+<text x="40" y="62" fill="#5F5E5A" font-size="13">Tools and technologies powering the pipeline</text>
+<text x="40" y="100" fill="#5F5E5A" font-size="10" letter-spacing="1.2" font-weight="500">PLATFORM & STORAGE</text>
+<g class="badge-pop" style="animation-delay: 0.1s;">
+<rect x="40" y="112" width="128.0" height="30" rx="15" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="0.5"/>
+<text x="104.0" y="131" text-anchor="middle" fill="#042C53" font-size="11" font-weight="500">Microsoft Fabric</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.15000000000000002s;">
+<rect x="176.0" y="112" width="82.5" height="30" rx="15" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="0.5"/>
+<text x="217.25" y="131" text-anchor="middle" fill="#042C53" font-size="11" font-weight="500">Lakehouse</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.2s;">
+<rect x="266.5" y="112" width="89.0" height="30" rx="15" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="0.5"/>
+<text x="311.0" y="131" text-anchor="middle" fill="#042C53" font-size="11" font-weight="500">Delta Lake</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.25s;">
+<rect x="363.5" y="112" width="69.5" height="30" rx="15" fill="#E6F1FB" stroke="#B5D4F4" stroke-width="0.5"/>
+<text x="398.25" y="131" text-anchor="middle" fill="#042C53" font-size="11" font-weight="500">OneLake</text>
+</g>
+<text x="40" y="156" fill="#5F5E5A" font-size="10" letter-spacing="1.2" font-weight="500">DATA PROCESSING</text>
+<g class="badge-pop" style="animation-delay: 0.30000000000000004s;">
+<rect x="40" y="168" width="69.5" height="30" rx="15" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.5"/>
+<text x="74.75" y="187" text-anchor="middle" fill="#633806" font-size="11" font-weight="500">PySpark</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.35s;">
+<rect x="117.5" y="168" width="63.0" height="30" rx="15" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.5"/>
+<text x="149.0" y="187" text-anchor="middle" fill="#633806" font-size="11" font-weight="500">Python</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.4s;">
+<rect x="188.5" y="168" width="43.5" height="30" rx="15" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.5"/>
+<text x="210.25" y="187" text-anchor="middle" fill="#633806" font-size="11" font-weight="500">SQL</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.45000000000000007s;">
+<rect x="240.0" y="168" width="82.5" height="30" rx="15" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.5"/>
+<text x="281.25" y="187" text-anchor="middle" fill="#633806" font-size="11" font-weight="500">Notebooks</text>
+</g>
+<text x="40" y="212" fill="#5F5E5A" font-size="10" letter-spacing="1.2" font-weight="500">DATA VISUALIZATION & MODELING</text>
+<g class="badge-pop" style="animation-delay: 0.5s;">
+<rect x="40" y="224" width="76.0" height="30" rx="15" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.5"/>
+<text x="78.0" y="243" text-anchor="middle" fill="#04342C" font-size="11" font-weight="500">Power BI</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.55s;">
+<rect x="124.0" y="224" width="43.5" height="30" rx="15" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.5"/>
+<text x="145.75" y="243" text-anchor="middle" fill="#04342C" font-size="11" font-weight="500">DAX</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.6s;">
+<rect x="175.5" y="224" width="245.0" height="30" rx="15" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.5"/>
+<text x="298.0" y="243" text-anchor="middle" fill="#04342C" font-size="11" font-weight="500">Dimensional Modeling (Star Schema)</text>
+</g>
+<text x="40" y="268" fill="#5F5E5A" font-size="10" letter-spacing="1.2" font-weight="500">AUTOMATION & CONNECTIVITY</text>
+<g class="badge-pop" style="animation-delay: 0.65s;">
+<rect x="40" y="280" width="115.0" height="30" rx="15" fill="#EEEDFE" stroke="#CECBF6" stroke-width="0.5"/>
+<text x="97.5" y="299" text-anchor="middle" fill="#3C3489" font-size="11" font-weight="500">Power Automate</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.7000000000000001s;">
+<rect x="163.0" y="280" width="82.5" height="30" rx="15" fill="#EEEDFE" stroke="#CECBF6" stroke-width="0.5"/>
+<text x="204.25" y="299" text-anchor="middle" fill="#3C3489" font-size="11" font-weight="500">REST APIs</text>
+</g>
+<g class="badge-pop" style="animation-delay: 0.75s;">
+<rect x="253.5" y="280" width="56.5" height="30" rx="15" fill="#EEEDFE" stroke="#CECBF6" stroke-width="0.5"/>
+<text x="281.75" y="299" text-anchor="middle" fill="#3C3489" font-size="11" font-weight="500">OAuth</text>
+</g>
+
+</svg>
+</section>
+
+
+<footer class="footer">
+<p>Project · 2025</p>
+<a href="https://www.linkedin.com/in/graceky2/" target="_blank">Connect on LinkedIn →</a>
+</footer>
+
+</div>
+</body>
+</html>
